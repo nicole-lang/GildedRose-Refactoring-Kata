@@ -11,10 +11,11 @@ type Item struct {
 
 func UpdateQuality(items []*Item) {
 	for _, item := range items {
+		itemName := item.Name
 		var shiftAmt int
 
 		//Update shift amount based on Name
-		switch item.Name {
+		switch itemName {
 		case "Sulfuras, Hand of Ragnaros":
 			continue
 		case "Aged Brie":
@@ -36,13 +37,11 @@ func UpdateQuality(items []*Item) {
 
 		default:
 			{
-				if item.Quality > 0 {
-					if strings.Contains(item.Name, "Conjured") {
-						//Conjured items degrade in quality twice as fast
-						shiftAmt = -2
-					} else {
-						shiftAmt = -1
-					}
+				if item.Quality >= 1 && strings.Contains(itemName, "Conjured") {
+					//Conjured items degrade in quality twice as fast
+					shiftAmt = -2
+				} else if item.Quality > 0 {
+					shiftAmt = -1
 				}
 			}
 		}
@@ -50,13 +49,13 @@ func UpdateQuality(items []*Item) {
 		if item.SellIn > 0 {
 			item.SellIn--
 		}
-		if item.SellIn == 0 && item.Name == "Backstage passes to a TAFKAL80ETC concert" {
+		if item.SellIn == 0 && itemName == "Backstage passes to a TAFKAL80ETC concert" {
 			item.Quality = 0
 			continue
 		}
 
 		if item.SellIn < 0 {
-			if item.Name != "Aged Brie" && item.Quality > 0 {
+			if itemName != "Aged Brie" && item.Quality > 0 {
 				shiftAmt--
 			}
 		}
