@@ -18,22 +18,25 @@ class GildedRose {
 
             if (isAgedProduct(itemName) && item.quality < 50) {
                 addQuality(item);
-            } else if (item.quality > 0){
-                item.quality -- ;
+            } else if (item.quality > 0) {
+                // Conjured items degrade in quality twice as fast
+                if (itemName.contains("Conjured")) {
+                    item.quality--;
+                }
+                item.quality--;
             }
 
-            item.sellIn --;
+            item.sellIn--;
 
-            if (item.sellIn < 0 && itemName.equals("Backstage passes to a TAFKAL80ETC concert")) 
-            {
+            if (item.sellIn < 0 && itemName.equals("Backstage passes to a TAFKAL80ETC concert")) {
                 item.quality = 0;
             }
         }
     }
 
-    public boolean isAgedProduct(String itemName){
+    public boolean isAgedProduct(String itemName) {
         return (itemName.equals("Aged Brie")
-                    || itemName.equals("Backstage passes to a TAFKAL80ETC concert"));
+                || itemName.equals("Backstage passes to a TAFKAL80ETC concert"));
     }
 
     public void addQuality(Item item) {
@@ -42,6 +45,7 @@ class GildedRose {
             item.quality++;
 
         } else if (item.name.equals("Backstage passes to a TAFKAL80ETC concert")) {
+            item.quality++;
             if (item.sellIn < 11 && item.quality < 50)
                 item.quality++;
 
